@@ -1,0 +1,413 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package com.Leave;
+
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
+      
+        
+public class Applyleave extends javax.swing.JFrame {
+
+    
+    public Applyleave() {
+        initComponents();
+        Loadfacultyid();
+        Loadleave();
+    }
+        int casual = 0;
+        int annual = 0;       //create variable
+        int medical = 0;
+    Connection con;
+    PreparedStatement pst;
+    PreparedStatement pst1;
+    PreparedStatement pst2;
+    
+    
+    public void Connection()
+    {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/fsm", "root","prusty@1234");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex){
+            Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
+    public void Loadfacultyid()
+    {
+        Connection();
+        try {
+        pst = con.prepareStatement("select * from leaveinfo");
+        ResultSet rs= pst.executeQuery();
+        
+        while(rs.next())
+        {
+            txtid.addItem(rs.getString("facultyid"));
+        
+        }
+        } catch(SQLException ex){
+            Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+    } 
+    
+    public void Loadleave()
+    {
+        Connection();
+     
+        String facultyid =(String)txtid.getSelectedItem();
+        
+        try {
+            pst = con.prepareStatement("select * from leavecal where facultyid=?");
+            pst.setString(1,facultyid);
+            ResultSet rs2=pst.executeQuery();
+        
+            if(rs2.next() == false)
+            {
+                JOptionPane.showMessageDialog(this,"Leave information error");
+            }
+            else
+            {
+              casual = rs2.getInt("casual"); 
+              annual = rs2.getInt("annual");
+              medical = rs2.getInt("medical");
+            }
+            
+            
+        } catch(SQLException ex) {
+            Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+               
+   
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtid = new javax.swing.JComboBox<>();
+        txtname = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtdays = new javax.swing.JSpinner();
+        rcasual = new javax.swing.JRadioButton();
+        rannual = new javax.swing.JRadioButton();
+        rmedical = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Faculty ID");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText(" Faculty Name");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("Apply Leave");
+
+        txtid.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "101", "102", "103", "104", "105", "106", "107" }));
+        txtid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtidActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Days");
+
+        rcasual.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        rcasual.setText("casual");
+
+        rannual.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        rannual.setText("annual");
+        rannual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rannualActionPerformed(evt);
+            }
+        });
+
+        rmedical.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        rmedical.setText("medical");
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton2.setText("CANCEL");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(279, 279, 279)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtname, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                            .addComponent(txtdays, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtid, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(rcasual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rannual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rmedical, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(116, 116, 116)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 132, Short.MAX_VALUE)))))
+                .addGap(90, 90, 90))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rcasual))
+                .addGap(37, 37, 37)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rannual))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtdays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rmedical))
+                .addGap(69, 69, 69)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(127, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>                        
+
+    private void rannualActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+    }                                       
+
+    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        // TODO add your handling code here:
+        String facultyid =  txtid.getSelectedItem().toString();
+        
+        Connection();
+        try {
+            pst = con.prepareStatement("select * from leaveinfo where facultyid = ?");
+            pst.setInt(1,Integer.parseInt( facultyid));
+            ResultSet rs1=pst.executeQuery();
+            
+            if(rs1.next() == false)
+            {
+                JOptionPane.showMessageDialog(this,"Faculty id error");
+            }
+            else
+            {
+                String name = rs1.getString("name");
+                txtname.setText(name.trim());
+                
+            }
+        } catch (SQLException ex){
+            Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }                                     
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        Loadleave();
+        int bleave ;
+        String facultyid = (String) txtid.getSelectedItem();
+         
+         int days = Integer.parseInt(txtdays.getValue().toString());
+         
+         if(rcasual.isSelected() == true )
+         {
+             bleave = casual-days;
+             
+           if(bleave < 0)
+           {
+               JOptionPane.showMessageDialog(this,"You have a casual leave" + casual);
+           }
+           else
+           {
+             try {
+                 pst = con.prepareStatement("update leavecal set casual=? where facultyid=?");
+                 pst.setInt(1,bleave);
+                 pst.setString(2,facultyid);
+                 pst.executeUpdate();
+                 
+                 JOptionPane.showMessageDialog(this,"your casual leave updated");
+                 
+             }   catch (SQLException ex) {  
+                     Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+                 }  
+           }
+         }
+         
+         else if(rannual.isSelected() == true )
+         {
+            bleave = annual-days;
+             
+           if(bleave < 0)
+           {
+               JOptionPane.showMessageDialog(this,"You have a annual leave" + annual);
+           }
+           else
+           {
+             try {
+                 pst1 = con.prepareStatement("update leavecal set annual=? where facultyid=?");
+                 pst1.setInt(1,bleave);
+                 pst1.setString(2,facultyid);
+                 pst1.executeUpdate();
+                 
+                 JOptionPane.showMessageDialog(this,"your annual leave updated");
+                 
+             }   catch (SQLException ex) {  
+                     Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+                 }  
+           }
+             
+         }
+         else if(rmedical.isSelected() == true )
+         {
+            bleave = medical-days;
+             
+           if(bleave < 0)
+           {
+               JOptionPane.showMessageDialog(this,"You have a medical leave" + medical);
+           }
+           else
+           {
+             try {
+                 pst2 = con.prepareStatement("update leavecal set medical = ? where facultyid = ?");
+                 pst2.setInt(1,bleave);
+                 pst2.setString(2,facultyid);
+                 pst2.executeUpdate();
+                 
+                 JOptionPane.showMessageDialog(this,"your medical leave updated");
+                 
+             }   catch (SQLException ex) {  
+                     Logger.getLogger(Applyleave.class.getName()).log(Level.SEVERE, null, ex);
+                 }  
+           }
+             
+         }
+         else
+         {
+            JOptionPane.showMessageDialog(this,"something wrong"); 
+         }
+    }                                        
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        setVisible(false);
+    }                                        
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Facultyinformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Facultyinformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Facultyinformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Facultyinformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Applyleave().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton rannual;
+    private javax.swing.JRadioButton rcasual;
+    private javax.swing.JRadioButton rmedical;
+    private javax.swing.JSpinner txtdays;
+    private javax.swing.JComboBox<String> txtid;
+    private javax.swing.JTextField txtname;
+    // End of variables declaration                   
+}
